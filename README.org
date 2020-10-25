@@ -1,0 +1,71 @@
+#+TITLE: UB Hacking 2020 Presentation
+#+AUTHOR: Ethan Blanton <eblanton@buffalo.edu>
+
+* Description
+
+This is a talk that I gave at UB Hacking 2020 about text processing at
+the command line.  The talk is over, but the slides remain!
+
+*** Layout
+
+The file =text-processing.org= is the slides, presented using
+=M-x org-present= in Emacs.  The commands in the slides are (mostly)
+debugged; I strongly suspect the long =awk= command has a bug regarding
+the first line of the =scores= file.
+
+The file =sectioned.txt= is example data for the =sed= command.
+
+The files =roster.csv= and =scores= are sample "student" data for fake UB
+students.  It is used for most of the other commands.
+
+*** Data
+
+The fields in =roster.csv= are:
+
+#+BEGIN_EXAMPLE
+ubitname,personnum,Lastname,Firstname
+#+END_EXAMPLE
+
+The fields in =scores.txt= are:
+
+#+BEGIN_EXAMPLE
+ubitname score
+#+END_EXAMPLE
+
+*** Elisp
+
+The elisp in =utilities.el= should not be confused with good elisp, but
+it was used to generate the UBITNames and person numbers in
+=rosters.csv=.
+
+* Disclaimer
+
+The names in =roster.csv= are, to the best of my knowledge, completely
+artificial.  Any match to a real name is coincidence.  They were
+generated using an online random name generator, and are 50% male and
+50% female (by the lights of the generator).  I did not vet them for
+suitability except for a very rapid glance over the list.  I take no
+responsibility for anything you don't like in that list.
+
+* License
+
+Copyright 2020 Ethan Blanton <eblanton@buffalo.edu>
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
