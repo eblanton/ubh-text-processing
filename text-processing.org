@@ -1,0 +1,176 @@
+#+TITLE: Everything is Text
+#+SUBTITLE: Processing Data on the Command Line
+
+* Everything is Text
+
+- A lot of data is /already text/!
+  + Source code
+  + HTML/XML
+  + JSON
+  + ...
+
+- A lot of the rest /could be./
+* This Talk
+
+This talk is about /ideas/, not /techniques/.
+
+I'll show you some techniques, but it'll be light on details.
+
+I hope you'll try some of this on your own!
+* Textual Formats
+
+- Comma-Separated Values (CSV)
+  + /Many/ applications can emit this
+  + Can be difficult to parse, but often isn't
+
+- Simple column of data
+  + Surprisingly useful!
+
+- Free-form text
+  + Inconvenient, but /very common/
+* Processing Tools
+
+- =sed=: The “streaming editor”
+
+- =awk=: A scripting language /precisely for/ text records!
+  (Aho, Weinberger, and Kernighan)
+
+- =sh=: The shell is surprisingly powerful for this
+
+- Your text editor (but not what this talk is about)
+* Regular Expressions
+
+- Regular expressions are a /class of language/.
+
+- They can describe certain /grammars/.
+
+- /Many/ Unix tools use regular expressions to /match text/.
+
+- They are unfortunately opaque, but /hugely useful/.
+
+- See =man 7 regex= for some syntax, but programs differ.
+* Pattern Matching with regex
+
+Most characters in a regex match /themselves/:
+- Alphabetic characters
+- Numbers
+- /Many/ puntuation characters
+
+Some characters form /patterns/:
+- =.= matches /any single character/
+- =[]= forms a /character class/
+- =*= repeats a character zero or more times
+- /etc./
+* Regex Examples
+
+Match the word =foo=:
+- =foo=
+
+Match either =foo= or =Foo=:
+- =[Ff]oo=
+
+Match any word starting with a letter up until space:
+- =[a-zA-z][^ ]*=
+
+Match =foo=, but only at the beginning of the line:
+- =^foo=
+* sed
+
+Before there was =vim=, there was =vi=.
+
+Before there was =vi=, there was =ex=.
+
+Before there was =ex=, there was =ed=.
+
+Before there was =ed=, there was =qed=, but we've gone too far.
+
+=sed= is the /full-featured text editor/ =ed=, usable from the command line.
+* sed Examples
+
+Delete everything from =BEGIN= to =END=:
+#+BEGIN_SRC shell
+  sed -e '/^BEGIN/,/^END/d' sectioned.txt
+#+END_SRC
+
+Replace =elb= with =Ethan Blanton=, but only /after/ =END=:
+#+BEGIN_SRC shell
+  sed -e '/^END/,$s/elb/Ethan Blanton/' sectioned.txt
+#+END_SRC
+* Awk
+
+Awk is a /programming language/ designed for record processing.
+
+- It reads each /line/ of its input as a /record/
+
+- It breaks the line into /fields/ based on a /field separator/
+
+- It provides a C-ish language /with excellent string processing/
+
+See =man awk= or /The AWK Programming Language/.
+* Awk Examples
+Show me students whose last name begins with A-C:
+#+BEGIN_SRC shell
+awk -F, '$3 ~ /^[A-C]/' roster.csv
+#+END_SRC
+Show me every student with at least 5 points:
+#+BEGIN_SRC shell
+  awk '$2 >= 5 { print $1 }' scores
+#+END_SRC
+Show me those students /with their names:/
+#+BEGIN_SRC shell
+  awk 'BEGIN { FS="," }                          \
+      NR == FNR { student[$1] = $4 " " $3 }      \
+      FNR == 1 && NR > 1 { FS=" "}               \
+      FNR < NR && $2 >= 5 { print student[$1] }' \
+      roster.csv scores
+#+END_SRC
+
+* The Shell
+
+The shell is actually a pretty powerful parser!
+
+Print all of the first names in the class:
+#+BEGIN_SRC shell
+  (IFS=,; while read line; do set $line; echo $4; done) < scores.csv
+#+END_SRC
+
+Select all students who got a zero on their assignment:
+#+BEGIN_SRC shell
+  cat scores | while read l; do set $l; [ $2 -eq 0 ] && echo $1; done
+#+END_SRC
+* Shell Tools
+
+In addition, the shell has many /commands/ for processing text:
+
+- =cut=: select portions of a line based on a delimiter
+- =paste=: combine portions of lines with a delimiter
+- =grep=: select lines based on patterns
+- =head=: select the first /n/ lines of a file
+- =tail=: select the last /n/ lines of a file
+- =sort=: sort (string or numeric) the lines of a file
+- =uniq=: count or remove duplicate lines in a file
+
+See =man coreutils= for more!
+* Shell Examples
+
+Sort our roster by last name
+#+BEGIN_SRC shell
+sort -t, -k3 roster.csv
+#+END_SRC
+Extract the ten highest scores from =scores=:
+#+BEGIN_SRC shell
+sort -k 2 -nr scores | head -n 10
+#+END_SRC
+Count perfect scores:
+#+BEGIN_SRC shell
+grep ' 7$' scores | wc -l
+#+END_SRC
+* Questions?
+
+
+
+
+
+
+                   Thanks for coming along!
+

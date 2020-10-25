@@ -1,0 +1,15 @@
+This file has a preamble with some arbitrary text in it.  After this
+preamble, there will be the keyword BEGIN, then some other text, then
+the keyword END.  Some of our commands will change only the text
+between those keywords.
+
+BEGIN
+Hi, I'm elb and I'm here to talk to you about text processing.
+
+We're going to see a lot of different tools for that task!  Some of
+them may be familiar to you, and some of them may be new, but I'm
+guessing some of the techniques will be surprising.
+END
+
+The file closes out with some more text.
+-- elb
